@@ -4,8 +4,7 @@
 # IT IS MEANT TO BE RUN AS A CRON JOB FOR (24*60*60)- 60 SECONDS = 86340 SECONDS = 23.98 HOURS
 
 
-#websocket_lifetime=86340 #seconds
-websocket_lifetime=120 #seconds
+websocket_lifetime=86340 #seconds
 
 if [[ "$1" == "start" ]]; then
 
@@ -19,8 +18,26 @@ if [[ "$1" == "start" ]]; then
 
 
 elif [[ "$1" == "stop" ]]; then
-    echo "TERMINATED websocket_stream.sh AT $(date)"
 
-    pkill -9 -f websocket_handler.py
+    echo "STOPPING websocket_stream.sh AT $(date)"
+
+    # find the process ID of the snapshot_handler.py process
+    pid=$(ps -ef | grep websocket_handler.py | grep -v grep | awk '{print $2}')
+
+    if [[ -z "$pid" ]]; then
+        echo "websocket_handler.py is not running"
+    else
+        # kill the process
+        
+        # loop over pid and kill all processes
+        for i in $pid; do
+        echo $i
+            kill $i
+        done
+        
+
+    fi
+    
+    echo "TERMINATED websocket_handler.py AT $(date)"
 
 fi

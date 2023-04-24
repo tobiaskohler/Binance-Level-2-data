@@ -21,3 +21,9 @@ sudo python3 snapshot_handler.py
 ````
 
 
+3. If you want or need to stop the processes during production do the following:
+```
+sudo ./websocket_controller.sh stop
+
+sudo ./snapshot_handler.sh stop
+```

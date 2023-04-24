@@ -23,6 +23,7 @@ elif [[ "$1" == "stop" ]]; then
 
     if [[ -z "$pid" ]]; then
         echo "snapshot_controller.sh is not running"
+
     else
         # kill the process
         
@@ -31,17 +32,16 @@ elif [[ "$1" == "stop" ]]; then
         echo $i
             kill $i
         done
-        
-
+    
+    
     fi
-
-
+        
     echo "TERMINATED snapshot_controller.sh AT $(date)"
 
-else
+    else
 
-    echo "Invalid argument: $1"
-    echo "Usage: $0 [start|stop]"
+        echo "Invalid argument: $1"
+        echo "Usage: $0 [start|stop]"
 
 
 fi
