@@ -1,0 +1,8 @@
+data_warehouse_path: ../data/
+symbols:
+  - BTCUSDT
+  - ETHUSDT
+  - ADAUSDT
+orderbook_depth: 1000
+stream_duration: 86370 # 24hours in seconds minus 30 seconds for rebooting new websockets
+snapshot_interval: 300 # 5 minutes
