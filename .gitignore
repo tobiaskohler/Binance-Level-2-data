@@ -1,5 +1,6 @@
 data_handler/
 data_handler/__pycache__/
+stream.log
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
