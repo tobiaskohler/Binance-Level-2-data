@@ -46,7 +46,7 @@ async def take_snapshot_loop(snapshot_interval):
 
 async def get_snapshots_manually(data_warehouse_path, symbols, orderbook_depth):
     tasks = []
-    
+
     for pair in symbols:
         tasks.append(get_snapshot(pair, data_warehouse_path, orderbook_depth))
         
