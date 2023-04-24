@@ -3,7 +3,9 @@ from websockets import connect
 import aiofiles
 import time
 from misc import load_config
+from directory_handler import check_directory_structure
 
+import threading
 
 date = time.strftime("%Y%m%d")
 
@@ -21,17 +23,20 @@ async def orderbook_download(pair, data_warehouse_path):
                 await f.write(data + '\n')
     
 
-
-
+async def download_all_pairs(data_warehouse_path, symbols):
+    tasks = []
+    for pair in symbols:
+        tasks.append(orderbook_download(pair, data_warehouse_path))
+    await asyncio.gather(*tasks)
 
 if __name__ == '__main__':
-    
     config = load_config()
-    data_warehouse_path  = config['data_warehouse_path']
-    
-    for pair in config['symbols']:
-        asyncio.run(orderbook_download(pair, data_warehouse_path))
+    check_directory_structure(config['data_warehouse_path'], config['symbols'])
 
+    data_warehouse_path = config['data_warehouse_path']
+    symbols = config['symbols']
+
+    asyncio.run(download_all_pairs(data_warehouse_path, symbols))
 
 
 #handling automatic disconnects, after 24 hours automatically reconnect! kil lthe old websocket and open another one
