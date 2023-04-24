@@ -1,3 +1,14 @@
+'''
+This script is used to download orderbook updates from Binance via websockets.
+
+The script is designed to be run as a background process, and will download orderbook updates for all symbols in the config file.
+
+IMPORTANT:
+To account for automatic disconnects from binance websockets (automatically after 24hours of streaming), schedule this script via CRON job to run for (24*60*60)-30 seconds = 86370 seconds. This will ensure that the script is restarted before the 24 hour limit is reached.
+'''
+
+
+
 import asyncio
 from websockets import connect
 from websockets import ConnectionClosedError, InvalidStatusCode, InvalidHandshake
@@ -6,7 +17,7 @@ import time
 from misc import load_config
 from directory_handler import check_directory_structure
 
-import threading
+import subprocess
 
 date = time.strftime("%Y%m%d")
 
@@ -59,10 +70,5 @@ if __name__ == '__main__':
 
     data_warehouse_path = config['data_warehouse_path']
     symbols = config['symbols']
-
+    
     asyncio.run(download_all_pairs(data_warehouse_path, symbols))
-
-
-#handling automatic disconnects, after 24 hours automatically reconnect! kil lthe old websocket and open another one
-#take multiple snapshots, like every 10 minutes or so
-#take snapshots manually when there is an event

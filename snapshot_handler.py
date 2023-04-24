@@ -1,8 +1,22 @@
+'''
+
+This script is used to take snapshots of the orderbook from Binance.
+
+The script is designed to be run as a background process, and will take snapshots of the orderbook for all symbols in the config file.
+
+IMPORTANT:
+Schedule this script via CRON job to run every n-seconds, where n is your desired interval in seconds.
+
+This allows for taking single snapshots of the orderbook before special events or at arbitrary times.
+'''
+
+
+
+
 import asyncio
 import aiofiles
 import time
 import httpx
-import ujson
 from misc import load_config
 from directory_handler import check_directory_structure
 
@@ -26,31 +40,30 @@ async def get_snapshot(pair, data_warehouse_path, orderbook_depth):
         await f.write(snapshot.text + '\n')
 
 
-# RUN THIS IN WHILE LOOP EVERY n-TH SECONDS
-async def get_snapshots_automatically(data_warehouse_path, symbols, orderbook_depth):
+# # RUN THIS IN WHILE LOOP EVERY n-TH SECONDS
+# async def get_snapshots_automatically(data_warehouse_path, symbols, orderbook_depth):
     
-    tasks = []
+#     tasks = []
     
-    for pair in symbols:
-        tasks.append(get_snapshot(pair, data_warehouse_path, orderbook_depth))
+#     for pair in symbols:
+#         tasks.append(get_snapshot(pair, data_warehouse_path, orderbook_depth))
         
-    await asyncio.gather(*tasks)
+#     await asyncio.gather(*tasks)
     
-async def take_snapshot_loop(snapshot_interval):
+# async def take_snapshot_loop(snapshot_interval):
     
-    while True:
-        await get_snapshots_automatically(data_warehouse_path, symbols, orderbook_depth)
-        await asyncio.sleep(snapshot_interval)
+#     while True:
+#         await get_snapshots_automatically(data_warehouse_path, symbols, orderbook_depth)
+#         await asyncio.sleep(snapshot_interval)
 
 
+# async def get_snapshots_manually(data_warehouse_path, symbols, orderbook_depth):
+#     tasks = []
 
-async def get_snapshots_manually(data_warehouse_path, symbols, orderbook_depth):
-    tasks = []
-
-    for pair in symbols:
-        tasks.append(get_snapshot(pair, data_warehouse_path, orderbook_depth))
+#     for pair in symbols:
+#         tasks.append(get_snapshot(pair, data_warehouse_path, orderbook_depth))
         
-    await asyncio.gather(*tasks)
+#     await asyncio.gather(*tasks)
 
 
 
@@ -64,4 +77,6 @@ if __name__ == '__main__':
         orderbook_depth = config['orderbook_depth']
         snapshot_interval = config['snapshot_interval']
     
-        asyncio.run(take_snapshot_loop(snapshot_interval))
+        # asyncio.run(take_snapshot_loop(snapshot_interval))
+        for pair in symbols:
+            asyncio.run(get_snapshot(pair, data_warehouse_path, orderbook_depth))
