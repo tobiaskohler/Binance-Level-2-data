@@ -36,7 +36,7 @@ async def orderbook_download(pair, data_warehouse_path):
             try:
                 data = await websocket.recv()
                 
-                async with aiofiles.open(f'{data_warehouse_path}/{date}/{pair}/updates/{timestamp}.txt', mode='a') as f:
+                async with aiofiles.open(f'{data_warehouse_path}/{date}/{pair}/orderbook_updates/{timestamp}.txt', mode='a') as f:
                     await f.write(data + '\n')
                     
             except ConnectionClosedError:

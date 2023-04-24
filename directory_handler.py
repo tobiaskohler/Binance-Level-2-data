@@ -18,11 +18,11 @@ def check_directory_structure(data_warehouse_path, symbols):
         if not os.path.exists(f'{data_warehouse_path}/{date}/{symbol}'):
             os.makedirs(f'{data_warehouse_path}/{date}/{symbol}')
             
-        if not os.path.exists(f'{data_warehouse_path}/{date}/{symbol}/snapshots'):
-            os.makedirs(f'{data_warehouse_path}/{date}/{symbol}/snapshots')
+        if not os.path.exists(f'{data_warehouse_path}/{date}/{symbol}/orderbook_snapshots'):
+            os.makedirs(f'{data_warehouse_path}/{date}/{symbol}/orderbook_snapshots')
             
-        if not os.path.exists(f'{data_warehouse_path}/{date}/{symbol}/updates'):
-            os.makedirs(f'{data_warehouse_path}/{date}/{symbol}/updates')
+        if not os.path.exists(f'{data_warehouse_path}/{date}/{symbol}/orderbook_updates'):
+            os.makedirs(f'{data_warehouse_path}/{date}/{symbol}/orderbook_updates')
 
 
 if __name__ == '__main__':
