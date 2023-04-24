@@ -35,6 +35,8 @@ async def get_snapshot(pair, data_warehouse_path, orderbook_depth):
 
     async with aiofiles.open(f'{data_warehouse_path}/{date}/{pair}/snapshots/{timestamp}.txt', mode='w') as f:
         await f.write(snapshot.text + '\n')
+        
+    print(f'Took snapshot of {pair} at {timestamp}')
 
 
 if __name__ == '__main__':

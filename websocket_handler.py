@@ -22,6 +22,8 @@ import subprocess
 date = time.strftime("%Y%m%d")
 
 async def orderbook_download(pair, data_warehouse_path):
+    
+    print(f'Start listening to Websocket Stream for {pair}...')
     config = load_config()
     websocket_timeout = config['websocket_timeout']
     
