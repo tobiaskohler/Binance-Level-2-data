@@ -28,16 +28,25 @@ async def orderbook_download(pair, data_warehouse_path):
     websocket_timeout = config['websocket_timeout']
     
     pair_lower = pair.lower()
-    wss_url = f'wss://stream.binance.com:9443/ws/{pair_lower}@depth@100ms'
+    
+    orderbook_depth_url = f'wss://stream.binance.com:9443/ws/{pair_lower}@depth@100ms'
+    trade_url = f'wss://stream.binance.com:9443/ws/{pair_lower}@trade'
+    
     timestamp = time.strftime("%Y%m%d%H%M%S")
     
-    async with connect(wss_url) as websocket:
+    async with connect(orderbook_depth_url) as depth_websocket , connect(trade_url) as trade_websocket:
         while True:
             try:
-                data = await websocket.recv()
+                depth_data = await depth_websocket.recv()
                 
                 async with aiofiles.open(f'{data_warehouse_path}/{date}/{pair}/orderbook_updates/{timestamp}.txt', mode='a') as f:
-                    await f.write(data + '\n')
+                    await f.write(depth_data + '\n')
+                
+                trade_data = await trade_websocket.recv()
+                
+                async with aiofiles.open(f'{data_warehouse_path}/{date}/{pair}/trades/{timestamp}.txt', mode='a') as f:
+                    await f.write(trade_data + '\n')
+                    
                     
             except ConnectionClosedError:
                 print('Connection closed, reconnecting...')

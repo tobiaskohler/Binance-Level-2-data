@@ -23,6 +23,9 @@ def check_directory_structure(data_warehouse_path, symbols):
             
         if not os.path.exists(f'{data_warehouse_path}/{date}/{symbol}/orderbook_updates'):
             os.makedirs(f'{data_warehouse_path}/{date}/{symbol}/orderbook_updates')
+            
+        if not os.path.exists(f'{data_warehouse_path}/{date}/{symbol}/trades'):
+            os.makedirs(f'{data_warehouse_path}/{date}/{symbol}/trades')
 
 
 if __name__ == '__main__':
