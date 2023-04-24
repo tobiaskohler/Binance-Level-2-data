@@ -1,9 +1,8 @@
 #!/bin/bash
 
 # THIS SCRIPT IS USED TO START AND STOP THE SNAPSHOT HANDLER 
-# IT IS MEANT TO BE RUN AS A CRON JOB FOR (24*60*60)- 60 SECONDS = 86340 SECONDS = 23.98 HOURS
 
-snapshot_interval=60 #seconds
+snapshot_interval=300 # every 5 minutes seconds
 
 if [[ "$1" == "start" ]]; then
 
