@@ -70,7 +70,7 @@ async def download_all_pairs(data_warehouse_path, symbols):
 if __name__ == '__main__':
     
     config = load_config()
-    check_directory_structure(config['data_warehouse_path'], config['symbols'])
+    # check_directory_structure(config['data_warehouse_path'], config['symbols'])
 
     data_warehouse_path = config['data_warehouse_path']
     symbols = config['symbols']

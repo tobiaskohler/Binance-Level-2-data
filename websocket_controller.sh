@@ -10,6 +10,7 @@ if [[ "$1" == "start" ]]; then
 
     echo "STARTED websocket_stream.sh AT $(date)"
 
+    /usr/local/bin/python3 directory_handler.py &
     /usr/local/bin/python3 orderbook_updates_wss_handler.py &
     /usr/local/bin/python3 trade_wss_handler.py &
 

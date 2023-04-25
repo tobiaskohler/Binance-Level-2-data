@@ -8,6 +8,8 @@ if [[ "$1" == "start" ]]; then
 
     echo "STARTED snapshot_controller.sh AT $(date)" &
 
+    /usr/local/bin/python3 directory_handler.py &
+
     while true; do
         /usr/local/bin/python3 snapshot_handler.py &
         sleep $snapshot_interval

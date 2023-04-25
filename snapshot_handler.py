@@ -42,7 +42,7 @@ async def get_snapshot(pair, data_warehouse_path, orderbook_depth):
 if __name__ == '__main__':
         
         config = load_config()
-        check_directory_structure(config['data_warehouse_path'], config['symbols'])
+        #check_directory_structure(config['data_warehouse_path'], config['symbols'])
     
         data_warehouse_path = config['data_warehouse_path']
         symbols = config['symbols']
