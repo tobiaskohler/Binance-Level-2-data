@@ -1,10 +1,12 @@
 '''
-This script is used to download orderbook updates from Binance via websockets.
+This script is used to download trade updates from Binance via websockets.
 
-The script is designed to be run as a background process, and will download orderbook updates for all symbols in the config file.
+The script is designed to be run as a background process, and will download trade updates for all symbols in the config file.
 
 IMPORTANT:
 To account for automatic disconnects from binance websockets (automatically after 24hours of streaming), schedule this script via CRON job to run for (24*60*60)-30 seconds = 86370 seconds. This will ensure that the script is restarted before the 24 hour limit is reached.
+
+Use shell script to run this script in the background:
 '''
 
 
@@ -17,31 +19,27 @@ import time
 from misc import load_config
 from directory_handler import check_directory_structure
 
-import subprocess
-
 date = time.strftime("%Y%m%d")
 
 async def orderbook_download(pair, data_warehouse_path):
     
-    print(f'Start listening to Websocket Stream for {pair}...')
     config = load_config()
     websocket_timeout = config['websocket_timeout']
-    
     pair_lower = pair.lower()
-    
-    orderbook_depth_url = f'wss://stream.binance.com:9443/ws/{pair_lower}@depth@100ms'
-    trade_url = f'wss://stream.binance.com:9443/ws/{pair_lower}trade'
-    
+    trade_url = f'wss://stream.binance.com:9443/ws/{pair_lower}@trade'
     timestamp = time.strftime("%Y%m%d%H%M%S")
     
-    async with connect(orderbook_depth_url) as depth_websocket :
+    print(f'Listening to {trade_url} ...')
+    
+    
+    async with connect(trade_url) as trade_websocket:
         while True:
             try:
-                depth_data = await depth_websocket.recv()
+                trade_data = await trade_websocket.recv()
                 
-                async with aiofiles.open(f'{data_warehouse_path}/{date}/{pair}/orderbook_updates/{timestamp}.txt', mode='a') as f:
-                    await f.write(depth_data + '\n')
-                
+                async with aiofiles.open(f'{data_warehouse_path}/{date}/{pair}/trades/{timestamp}.txt', mode='a') as f:
+                    await f.write(trade_data + '\n')
+                    
             except ConnectionClosedError as e:
                 print('Connection closed, reconnecting...')
                 print(e)
